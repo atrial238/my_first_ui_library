@@ -1,3 +1,4 @@
 import './lib/lib';
+import $ from './lib/lib';
 
-$('div').toggleClass('some')
+
