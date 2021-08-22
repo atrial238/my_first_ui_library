@@ -100,10 +100,17 @@ const $ = function (selector) {
 };
 
 $.prototype.init = function (selector) {
-  if (!selector) return this;
-  Object.assign(this, document.querySelectorAll(selector));
-  this.length = document.querySelectorAll(selector).length;
-  return this;
+  try {
+    const elements = document.querySelectorAll(selector);
+    if (!selector) return this;
+    if (!elements.length) throw new Error(`don't find elements with selector "${selector}"`);
+    Object.assign(this, elements);
+    this.length = elements.length;
+    return this;
+  } catch (e) {
+    console.error(e);
+    return this;
+  }
 };
 
 $.prototype.init.prototype = $.prototype;
@@ -125,6 +132,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_display__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/display */ "./src/js/lib/modules/display.js");
 /* harmony import */ var _modules_classes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/classes */ "./src/js/lib/modules/classes.js");
 /* harmony import */ var _modules_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/actions */ "./src/js/lib/modules/actions.js");
+/* harmony import */ var _modules_attributes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/attributes */ "./src/js/lib/modules/attributes.js");
+
 
 
 
@@ -171,6 +180,42 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.click = function (callba
   for (let i = 0; i < this.length; i++) {
     if (!this[i].addEventListener) continue;
     !callback ? this.click() : this[i].addEventListener('click', callback);
+  }
+
+  return this;
+};
+
+/***/ }),
+
+/***/ "./src/js/lib/modules/attributes.js":
+/*!******************************************!*\
+  !*** ./src/js/lib/modules/attributes.js ***!
+  \******************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core */ "./src/js/lib/core.js");
+
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.addAttribute = function (name, value) {
+  if (!name || !value) return this;
+
+  for (let i = 0; i < this.length; i++) {
+    if (!this[i].setAttribute) continue;
+    this[i].setAttribute(name, value);
+  }
+
+  return this;
+};
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.removeAttribute = function (name) {
+  if (!name) return this;
+
+  for (let i = 0; i < this.length; i++) {
+    if (!this[i].setAttribute) continue;
+    this[i].removeAttribute(name);
   }
 
   return this;
@@ -276,6 +321,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/lib */ "./src/js/lib/lib.js");
 
 
+Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('.first').addAttribute('type', 'button').removeAttribute('type');
+Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('.second').removeAttribute('id');
 
 /***/ })
 

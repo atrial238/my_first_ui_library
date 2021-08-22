@@ -4,10 +4,18 @@ const $ = function(selector){
 }
 
 $.prototype.init = function(selector) {
-   if(!selector) return this;
-   Object.assign(this, document.querySelectorAll(selector));
-   this.length = document.querySelectorAll(selector).length;
-   return this;
+   try{
+      const elements = document.querySelectorAll(selector)
+      if(!selector) return this;
+      if(!elements.length) throw new Error(`don't find elements with selector "${selector}"`)
+      Object.assign(this, elements);
+      this.length = elements.length;
+      return this;
+   }catch(e){
+      console.error(e)
+      return this;
+   }
+   
 }
 
 $.prototype.init.prototype = $.prototype;
